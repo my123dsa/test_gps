@@ -42,7 +42,7 @@ export default function AttendancePage() {
 
     const handleSubmit = async (e, type) => {
         e.preventDefault()
-
+12
         getCurrentLocation()
     }
 
