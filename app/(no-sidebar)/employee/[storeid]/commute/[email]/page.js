@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
-import { nextClient } from '@/lib/nextClient';
 
 export default function AttendancePage() {
     const [loading, setLoading] = useState(false);
@@ -15,7 +14,8 @@ export default function AttendancePage() {
     const email = params.email;
 
     useEffect(() => {
-        // 브라우저가 geolocation을 지원하지 않는 경우 체크
+        if (typeof window !== 'undefined') {
+            // 브라우저가 geolocation을 지원하지 않는 경우 체크
         const checkIsDesktop = () => {
             const userAgent = navigator.userAgent.toLowerCase();
             return userAgent.includes('win') || userAgent.includes('mac') || userAgent.includes('linux');
@@ -53,6 +53,7 @@ export default function AttendancePage() {
             },
             { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
         );
+        }
     }, []);
     const getCurrentLocation = async () => {
         const getPosition = async (options) => {
