@@ -7,7 +7,7 @@ import { nextClient } from '@/lib/nextClient';
 export default function AttendancePage() {
     const [loading, setLoading] = useState(false);
     const [locationPermission, setLocationPermission] = useState(false);
-    const [isDesktop, setIsDesktop] = useState(true);
+    const [isDesktop, setIsDesktop] = useState(false);
 
 
     const params = useParams();
@@ -18,7 +18,7 @@ export default function AttendancePage() {
         // 브라우저가 geolocation을 지원하지 않는 경우 체크
         const checkIsDesktop = () => {
             const userAgent = navigator.userAgent.toLowerCase();
-            alert(navigator.userAgent.toLowerCase())
+            // alert(navigator.userAgent.toLowerCase())
             return userAgent.includes('windows') || userAgent.includes('macintosh');
             
         };
@@ -56,6 +56,7 @@ export default function AttendancePage() {
             { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
         );
     }, []);
+    
     const getCurrentLocation = async () => {
         const getPosition = async (options) => {
             return new Promise((resolve, reject) => {
@@ -129,12 +130,10 @@ export default function AttendancePage() {
             setLoading(true)
             
             const location = await getCurrentLocation()
-            console.log('Current location:', location)
-            console.log(endpoint)
 
             const   latitude= location.lat;
             const longitude= location.lng;
-            const endpoint = type === 'go' ? 'go-to-work' : 'leave-work'
+            const endpoint = (type === 'go') ? 'go-to-work' : 'leave-work'
 
             const serverResponse = await nextClient.post('/attendance/employee/commute', {
                 latitude,
