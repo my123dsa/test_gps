@@ -7,6 +7,7 @@ import AddressSearch from '@/components/addsearch/AddressSearch';
 import { nextClient } from '@/lib/nextClient';
 import { validateForm, commonValidateRules } from "@/utils/validation";
 import { useAuth } from '@/contexts/AuthProvider';
+import Loading from '@/components/loading/Loading';
 
 const REQUIRED_ERROR = "필수 항목입니다.";
 
@@ -34,6 +35,7 @@ const EmployeeForm = forwardRef(({ mode, initialData, onSubmit }, ref) => {
     const [formErrors, setFormErrors] = useState({});
     const [error, setError] = useState('');
     const [isAccountValid, setIsAccountValid] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     // initialData가 변경될 때 formData를 업데이트 (수정 모드)
     useEffect(() => {
@@ -75,16 +77,21 @@ const EmployeeForm = forwardRef(({ mode, initialData, onSubmit }, ref) => {
     };
 
     const handleAccountValidation = (isValid) => {
+        // isValid 값을 직접 설정
         setIsAccountValid(isValid);
-        console.log(isValid);
-        
-        if(isAccountValid) {
-            setFormErrors(prev => ({
+    
+        // 계좌 확인이 유효할 경우 에러 메시지 제거
+        if (isValid) {
+            setFormErrors((prev) => ({
+
                 ...prev,
-                accountNumber: '',
+                accountNumber: '', // accountNumber 에러 메시지 제거
             }));
         }
-    }
+    
+        // isAccountValid 값 출력 (비동기적으로 반영되므로, 아래의 콘솔 출력은 최신 상태를 바로 반영하지 않음)
+        console.log(isValid);
+    };
 
     const validateRules = {
         name: commonValidateRules.required,
@@ -170,6 +177,7 @@ const EmployeeForm = forwardRef(({ mode, initialData, onSubmit }, ref) => {
                 storeId
             };
 
+            setLoading(true);
             try {
                 let response;
                 // Axios 통해 API 요청
@@ -191,12 +199,18 @@ const EmployeeForm = forwardRef(({ mode, initialData, onSubmit }, ref) => {
                 if (response.data.success) {
                     // 성공 시 직원 관리 페이지로
                     if (onSubmit) onSubmit(updatedFormData);
-                    Router.push('/employee/management');
                 }
             } catch (error) {
-                const errorMessage = error.response?.data?.error || error.message;
+                let errorMessage;
+                if (error?.response?.status == '400') {
+                    errorMessage = '가게에 이미 등록된 이메일입니다.'
+                } else {
+                    errorMessage = error.response?.data?.error || error.message;
+                }
                 setError(errorMessage);
                 alert(errorMessage);
+            } finally {
+                setLoading(false);
             }
             
         } else {
@@ -217,6 +231,7 @@ const EmployeeForm = forwardRef(({ mode, initialData, onSubmit }, ref) => {
 
     return (
         <div className={styles.formContainer}>
+            {loading && <Loading />}
             <h2 className={styles.formTitle}>{mode === 'edit' ? '직원 수정' : '직원 추가'}</h2>
             <form onSubmit={handleSubmit}>
                 <div className={styles.formGroup}>
@@ -290,7 +305,7 @@ const EmployeeForm = forwardRef(({ mode, initialData, onSubmit }, ref) => {
                     <div className={styles.formGroup}>
                         <label>4대 보험 여부</label>
                         <select
-                            value={formData.insuranceIncluded ? 'true' : 'false'}
+                             value={formData.employmentType === 1 || formData.employmentType === 3 ? 'true' : 'false'}
                             onChange={(e) => handleInsuranceChange(e.target.value)}
                             disabled={formData.employmentType === 1} // 월급 선택 시 비활성화
                         >
