@@ -7,7 +7,7 @@ import { nextClient } from '@/lib/nextClient';
 export default function AttendancePage() {
     const [loading, setLoading] = useState(false);
     const [locationPermission, setLocationPermission] = useState(false);
-    const [isDesktop, setIsDesktop] = useState(false);
+    const [isDesktop, setIsDesktop] = useState(true);
 
 
     const params = useParams();
@@ -19,8 +19,10 @@ export default function AttendancePage() {
         const checkIsDesktop = () => {
             const userAgent = navigator.userAgent.toLowerCase();
             return userAgent.includes('windows') || userAgent.includes('macintosh');
+            
         };
         setIsDesktop(checkIsDesktop());
+        alert(navigator.userAgent.toLowerCase())
     
         // 브라우저가 geolocation을 지원하지 않는 경우 체크
         if (!('geolocation' in navigator)) {
