@@ -42,34 +42,8 @@ export default function AttendancePage() {
 
     const handleSubmit = async (e, type) => {
         e.preventDefault()
- 
-        try {
-            setLoading(true)
-            
-            const location = await getCurrentLocation()
-            alert(`위도 경도: ${location.lat} ${location.lng}`)
-            console.log('Current location:', location)
-            console.log(endpoint)
 
-            const   latitude= location.lat;
-            const longitude= location.lng;
-            const endpoint = type === 'go' ? 'go-to-work' : 'leave-work'
-
-            const serverResponse = await nextClient.post('/attendance/employee/commute', {
-                latitude,
-                longitude,
-                endpoint,
-                storeId,
-                email
-            });
-
-            alert(serverResponse.data.message);
-            
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setLoading(false)
-        }
+        getCurrentLocation()
     }
 
     return (
