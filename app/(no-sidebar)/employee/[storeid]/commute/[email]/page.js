@@ -98,7 +98,7 @@ export default function AttendancePage() {
                     lastError = new Error('낮은 정확도');
                     continue;
                 }
-
+                alert(`Latitude: ${position.lat}\nLongitude: ${position.lng}\nAccuracy: ${position.accuracy}`);
                 console.log(`위치 정확도: ${position.accuracy}m`);
                 return position;
 
