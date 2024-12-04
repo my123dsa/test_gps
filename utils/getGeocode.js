@@ -21,6 +21,7 @@ export const getGeocode = async (address) => {
 
     // 첫 번째 결과의 좌표 반환
     const { x, y } = data.documents[0];
+    alert( ` ${parseFloat(y)} ${parseFloat(x)}`)
     return {
       latitude: parseFloat(y),
       longitude: parseFloat(x),
@@ -29,7 +30,7 @@ export const getGeocode = async (address) => {
     console.error('주소 변환 중 오류 발생:', error);
     throw error;
   }
-  
+
     // try {
     //   const response = await fetch(
     //     `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`
