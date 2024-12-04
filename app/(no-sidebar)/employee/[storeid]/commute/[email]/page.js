@@ -18,7 +18,10 @@ export default function AttendancePage() {
         // 브라우저가 geolocation을 지원하지 않는 경우 체크
         const checkIsDesktop = () => {
             const userAgent = navigator.userAgent.toLowerCase();
-            return userAgent.includes('win') || userAgent.includes('mac') || userAgent.includes('linux');
+            // Windows, MacOS, Linux Desktop만 체크
+            return (userAgent.includes('windows') || 
+                    (userAgent.includes('macintosh') && !userAgent.includes('mobile')) || 
+                    (userAgent.includes('linux') && !userAgent.includes('android')));
         };
         setIsDesktop(checkIsDesktop());
     
