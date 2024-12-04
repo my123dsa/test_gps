@@ -1,0 +1,171 @@
+.container {
+  width: 100%;
+  margin: 30px auto;
+  height: calc(100vh - var(--header-height) - 60px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.selectContainer {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.selectContainer select {
+  padding: 8px 16px;
+  font-size: 20px;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.gridContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding: 20px;
+  border:  1px solid #e5e7eb;
+  border-radius: 20px;
+  min-height: 78vh;
+  flex: 1;
+  background-color: white;
+}
+.leftSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid #e5e7eb;
+  padding-right: 1rem;
+}
+
+.chartContainer {
+  display: flex;
+  margin-top: 3rem;
+}
+
+.chartStyle {
+  width: 350px;
+  height: 300px;
+}
+
+.rightSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1solid black;
+}
+
+.barChartContainer {
+  margin-top: 2rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+
+.summaryContainer {
+  display: flex;
+  gap: 2rem;
+}
+
+.card {
+  background-color: #1a1a3d;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  min-width: 300px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.icon {
+  background-color: rgba(59, 130, 246, 0.2);
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  padding: 10px;
+  margin-right: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.textContainer h3 {
+  font-size: 20px;
+}
+
+
+
+.reportsContainer {
+  height: 3rem;
+  margin-top: 2rem;
+  display: flex;
+  gap: 2rem;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 1024px) {
+  .gridContainer {
+    grid-template-columns: 1fr;
+    padding: 20px;
+    overflow-y: auto;
+  }
+
+  .leftSection {
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 2rem;
+  }
+
+  .chartContainer {
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    margin: 20px auto;
+    height: 100%;
+  }
+
+  .gridContainer {
+    padding: 15px;
+  }
+
+  .selectContainer {
+    display: flex;
+  }
+
+  .chartContainer {
+    flex-direction: column;
+  }
+
+  .card {
+    width: 100%;
+  }
+
+  .chartContainer {
+    gap: 2rem;
+  }
+}
+
+/* 매우 작은 화면에서의 추가 조정 */
+@media (max-width: 480px) {
+  .selectContainer {
+    align-items: center;
+  }
+
+  .selectContainer select {
+    width: 30%;
+  }
+}
