@@ -26,7 +26,7 @@ export default function AttendancePage() {
                 },
                 (error) => {
                     reject(error)
-                },{ enableHighAccuracy: false, // 고정밀도 끄기 
+                },{ enableHighAccuracy: true, // 고정밀도 끄기 
                     maximumAge: 30000, // 30초 이내 캐시된 위치 허용 
                     timeout: 3000 // 3초 제한 
                     }
@@ -61,7 +61,7 @@ export default function AttendancePage() {
             
         } catch (error) {
             console.log(error);
-            alert('위치 정보를 가져오는데 실패했거나 처리 중 오류가 발생했습니다.')
+            alert(`위도 경도: ${latitude} ${longitude}`)
         } finally {
             setLoading(false)
         }
