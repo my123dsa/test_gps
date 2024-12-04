@@ -32,6 +32,7 @@ export default function AttendancePage() {
                     }
 
             )
+            alert(`위도 경도: ${latitude} ${longitude}`)
         })
     }
 
@@ -42,6 +43,7 @@ export default function AttendancePage() {
             setLoading(true)
             
             const location = await getCurrentLocation()
+            alert(`위도 경도: ${location.lat} ${location.lng}`)
             console.log('Current location:', location)
             console.log(endpoint)
 
