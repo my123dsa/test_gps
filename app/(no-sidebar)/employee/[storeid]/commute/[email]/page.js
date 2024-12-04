@@ -19,20 +19,24 @@ export default function AttendancePage() {
 
             navigator.geolocation.getCurrentPosition(
                 (position) => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    // 여기서 alert를 실행하면 위치 정보를 받은 후에 실행됩니다
+                    alert(`위도 경도: ${lat} ${lng}`);
                     resolve({
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
+                        lat: lat,
+                        lng: lng
                     })
                 },
                 (error) => {
                     reject(error)
-                },{ enableHighAccuracy: true, // 고정밀도 끄기 
-                    maximumAge: 30000, // 30초 이내 캐시된 위치 허용 
-                    timeout: 3000 // 3초 제한 
-                    }
-
+                },
+                { 
+                    enableHighAccuracy: true,
+                    maximumAge: 30000,
+                    timeout: 3000 
+                }
             )
-            alert(`위도 경도: ${latitude} ${longitude}`)
         })
     }
 
@@ -63,7 +67,6 @@ export default function AttendancePage() {
             
         } catch (error) {
             console.log(error);
-            alert(`위도 경도: ${latitude} ${longitude}`)
         } finally {
             setLoading(false)
         }
