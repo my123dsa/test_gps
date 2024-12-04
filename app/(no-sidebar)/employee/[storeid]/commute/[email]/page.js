@@ -26,7 +26,11 @@ export default function AttendancePage() {
                 },
                 (error) => {
                     reject(error)
-                }
+                },{ enableHighAccuracy: false, // 고정밀도 끄기 
+                    maximumAge: 30000, // 30초 이내 캐시된 위치 허용 
+                    timeout: 3000 // 3초 제한 
+                    }
+
             )
         })
     }
