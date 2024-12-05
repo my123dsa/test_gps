@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Script from 'next/script';
 import { useRegistration } from "@/contexts/RegistrationContext";
 
-export const KakaoMap = ({latAndLng,onLocationSelect}) => {
+export const KakaoMap = ({latAndLng}) => {
     const {setFormData} =  useRegistration();
     const mapContainer = useRef(null);
     const [currentLocation, setCurrentLocation] = useState(null);
