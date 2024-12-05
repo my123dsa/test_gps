@@ -9,6 +9,19 @@ export const KakaoMap = ({latAndLng}) => {
     const mapContainer = useRef(null);
     const [currentLocation, setCurrentLocation] = useState(null);
     const {lat,lng}= latAndLng;
+
+    const handleKakaoMapRequest = (request) => {
+        if (request.url.includes('dapi.kakao.com')) {
+            const response = NextResponse.next();
+            response.headers.set('Access-Control-Allow-Origin', '*');
+            response.headers.set('Access-Control-Allow-Methods', 'GET');
+            response.headers.set('Access-Control-Allow-Headers', 'Content-Type');
+            return response;
+        }
+        return NextResponse.next();
+    };
+
+
     const initializeMap = () => {
         if (!window.kakao?.maps || !mapContainer.current) return;
 
@@ -43,14 +56,35 @@ export const KakaoMap = ({latAndLng}) => {
     };
 
     useEffect(() => {
+        // 미들웨어 설정
+        if (typeof window !== 'undefined') {
+            window.addEventListener('fetch', (event) => {
+                if (event.request.url.includes('dapi.kakao.com')) {
+                    event.respondWith(handleKakaoMapRequest(event.request));
+                }
+            });
+        }
+        
         window.kakao?.maps?.load(initializeMap);
+        
+        return () => {
+            if (typeof window !== 'undefined') {
+                window.removeEventListener('fetch', handleKakaoMapRequest);
+            }
+        };
     }, [lat, lng]);
 
     return (
         <>
             <Script
-                src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY}&autoload=false`}
-                onLoad={() => window.kakao?.maps?.load(initializeMap)}/>
+               strategy="beforeInteractive"
+               src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY}&autoload=false`}
+               onLoad={() => {
+                   window.kakao?.maps?.load(() => {
+                       initializeMap();
+                   });
+               }}
+           />
             <div>
                 <div ref={mapContainer} style={{ width: '500px', height: '400px' }} />
                 <button onClick={handleConfirmLocation}>위치 확정</button>
